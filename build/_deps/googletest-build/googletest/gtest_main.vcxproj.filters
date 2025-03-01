@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="D:\C++ projects\otus-cpp\build\_deps\googletest-src\googletest\src\gtest_main.cc">
+    <ClCompile Include="D:\C-projects\otus-cpp\build\_deps\googletest-src\googletest\src\gtest_main.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="D:\C++ projects\otus-cpp\build\_deps\googletest-src\googletest\CMakeLists.txt" />
+    <CustomBuild Include="D:\C-projects\otus-cpp\build\_deps\googletest-src\googletest\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{A67D1EDE-4BBB-3664-881C-919D8623B5E8}</UniqueIdentifier>
+      <UniqueIdentifier>{67F6EFCE-B0AA-3F04-820E-3DF632EEF7E9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

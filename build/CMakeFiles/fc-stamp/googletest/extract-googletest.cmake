@@ -5,8 +5,8 @@ cmake_minimum_required(VERSION ${CMAKE_VERSION}) # this file comes with cmake
 
 # Make file names absolute:
 #
-get_filename_component(filename "D:/C++ projects/otus-cpp/build/_deps/googletest-tmp/v1.14.0.zip" ABSOLUTE)
-get_filename_component(directory "D:/C++ projects/otus-cpp/build/_deps/googletest-src" ABSOLUTE)
+get_filename_component(filename "D:/C-projects/otus-cpp/build/_deps/googletest-tmp/v1.14.0.zip" ABSOLUTE)
+get_filename_component(directory "D:/C-projects/otus-cpp/build/_deps/googletest-src" ABSOLUTE)
 
 message(VERBOSE "extracting...
      src='${filename}'

@@ -2,10 +2,10 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>D:\C++ projects\otus-cpp\build\x64\Debug\ZERO_CHECK</FullPath>
+      <FullPath>D:\C-projects\otus-cpp\build\x64\Debug\ZERO_CHECK</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>D:\C++ projects\otus-cpp\build\Debug\test_version.exe</FullPath>
+      <FullPath>D:\C-projects\otus-cpp\build\Debug\test_version.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

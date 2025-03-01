@@ -1,6 +1,6 @@
-^D:\C++ PROJECTS\OTUS-CPP\BUILD\_DEPS\GOOGLETEST-SRC\GOOGLEMOCK\CMAKELISTS.TXT
+^D:\C-PROJECTS\OTUS-CPP\BUILD\_DEPS\GOOGLETEST-SRC\GOOGLEMOCK\CMAKELISTS.TXT
 setlocal
-"C:\Program Files\CMake\bin\cmake.exe" "-SD:/C++ projects/otus-cpp" "-BD:/C++ projects/otus-cpp/build" --check-stamp-file "D:/C++ projects/otus-cpp/build/_deps/googletest-build/googlemock/CMakeFiles/generate.stamp"
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/C-projects/otus-cpp -BD:/C-projects/otus-cpp/build --check-stamp-file D:/C-projects/otus-cpp/build/_deps/googletest-build/googlemock/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone

@@ -25,7 +25,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{4B08F9D1-6889-3813-BF47-DFB29F75EF5F}</ProjectGuid>
+    <ProjectGuid>{21A11A82-466E-304C-B10E-AD61D83CDA1F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
     <Platform>x64</Platform>
@@ -108,11 +108,11 @@
     </Midl>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="D:\C++ projects\otus-cpp\build\_deps\googletest-src\CMakeLists.txt">
+    <CustomBuild Include="D:\C-projects\otus-cpp\build\_deps\googletest-src\CMakeLists.txt">
       <UseUtf8Encoding>Always</UseUtf8Encoding>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule D:/C++ projects/otus-cpp/build/_deps/googletest-src/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule D:/C-projects/otus-cpp/build/_deps/googletest-src/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" "-SD:/C++ projects/otus-cpp" "-BD:/C++ projects/otus-cpp/build" --check-stamp-file "D:/C++ projects/otus-cpp/build/_deps/googletest-build/CMakeFiles/generate.stamp"
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/C-projects/otus-cpp -BD:/C-projects/otus-cpp/build --check-stamp-file D:/C-projects/otus-cpp/build/_deps/googletest-build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -121,11 +121,11 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\CMake\share\cmake-3.31\Modules\CMakeDependentOption.cmake;C:\Program Files\CMake\share\cmake-3.31\Modules\GNUInstallDirs.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\C++ projects\otus-cpp\build\_deps\googletest-build\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\C-projects\otus-cpp\build\_deps\googletest-build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule D:/C++ projects/otus-cpp/build/_deps/googletest-src/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule D:/C-projects/otus-cpp/build/_deps/googletest-src/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" "-SD:/C++ projects/otus-cpp" "-BD:/C++ projects/otus-cpp/build" --check-stamp-file "D:/C++ projects/otus-cpp/build/_deps/googletest-build/CMakeFiles/generate.stamp"
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/C-projects/otus-cpp -BD:/C-projects/otus-cpp/build --check-stamp-file D:/C-projects/otus-cpp/build/_deps/googletest-build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -134,11 +134,11 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\CMake\share\cmake-3.31\Modules\CMakeDependentOption.cmake;C:\Program Files\CMake\share\cmake-3.31\Modules\GNUInstallDirs.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\C++ projects\otus-cpp\build\_deps\googletest-build\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\C-projects\otus-cpp\build\_deps\googletest-build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule D:/C++ projects/otus-cpp/build/_deps/googletest-src/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule D:/C-projects/otus-cpp/build/_deps/googletest-src/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" "-SD:/C++ projects/otus-cpp" "-BD:/C++ projects/otus-cpp/build" --check-stamp-file "D:/C++ projects/otus-cpp/build/_deps/googletest-build/CMakeFiles/generate.stamp"
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/C-projects/otus-cpp -BD:/C-projects/otus-cpp/build --check-stamp-file D:/C-projects/otus-cpp/build/_deps/googletest-build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -147,11 +147,11 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Program Files\CMake\share\cmake-3.31\Modules\CMakeDependentOption.cmake;C:\Program Files\CMake\share\cmake-3.31\Modules\GNUInstallDirs.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\C++ projects\otus-cpp\build\_deps\googletest-build\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\C-projects\otus-cpp\build\_deps\googletest-build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule D:/C++ projects/otus-cpp/build/_deps/googletest-src/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule D:/C-projects/otus-cpp/build/_deps/googletest-src/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" "-SD:/C++ projects/otus-cpp" "-BD:/C++ projects/otus-cpp/build" --check-stamp-file "D:/C++ projects/otus-cpp/build/_deps/googletest-build/CMakeFiles/generate.stamp"
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/C-projects/otus-cpp -BD:/C-projects/otus-cpp/build --check-stamp-file D:/C-projects/otus-cpp/build/_deps/googletest-build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -160,7 +160,7 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\CMake\share\cmake-3.31\Modules\CMakeDependentOption.cmake;C:\Program Files\CMake\share\cmake-3.31\Modules\GNUInstallDirs.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\C++ projects\otus-cpp\build\_deps\googletest-build\CMakeFiles\generate.stamp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\C-projects\otus-cpp\build\_deps\googletest-build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
@@ -168,26 +168,26 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="D:\C++ projects\otus-cpp\build\ZERO_CHECK.vcxproj">
-      <Project>{34482B07-E6FC-3F65-AC4C-D7FF50CFAD17}</Project>
+    <ProjectReference Include="D:\C-projects\otus-cpp\build\ZERO_CHECK.vcxproj">
+      <Project>{76E8A739-4BE4-35EB-9DAC-BBA8660481A5}</Project>
       <Name>ZERO_CHECK</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
-    <ProjectReference Include="D:\C++ projects\otus-cpp\build\_deps\googletest-build\googlemock\gmock.vcxproj">
-      <Project>{516FFEBB-AF9C-3E46-9010-B603624861E8}</Project>
+    <ProjectReference Include="D:\C-projects\otus-cpp\build\_deps\googletest-build\googlemock\gmock.vcxproj">
+      <Project>{91CBE711-8352-36C6-B9FB-C0D37FA085F9}</Project>
       <Name>gmock</Name>
     </ProjectReference>
-    <ProjectReference Include="D:\C++ projects\otus-cpp\build\_deps\googletest-build\googlemock\gmock_main.vcxproj">
-      <Project>{07D13C9D-018E-3099-9F85-C0E714374D41}</Project>
+    <ProjectReference Include="D:\C-projects\otus-cpp\build\_deps\googletest-build\googlemock\gmock_main.vcxproj">
+      <Project>{0697BC36-E04D-3117-AB43-B776BD44687B}</Project>
       <Name>gmock_main</Name>
     </ProjectReference>
-    <ProjectReference Include="D:\C++ projects\otus-cpp\build\_deps\googletest-build\googletest\gtest.vcxproj">
-      <Project>{A88FD3ED-A845-3F53-AEC8-78912D7F9D25}</Project>
+    <ProjectReference Include="D:\C-projects\otus-cpp\build\_deps\googletest-build\googletest\gtest.vcxproj">
+      <Project>{D6EFF618-C3F9-3869-B99C-2FCD26595688}</Project>
       <Name>gtest</Name>
     </ProjectReference>
-    <ProjectReference Include="D:\C++ projects\otus-cpp\build\_deps\googletest-build\googletest\gtest_main.vcxproj">
-      <Project>{20EDBEF3-15E1-30F3-87BD-3D3CEB9CF24B}</Project>
+    <ProjectReference Include="D:\C-projects\otus-cpp\build\_deps\googletest-build\googletest\gtest_main.vcxproj">
+      <Project>{C4B178FB-B577-3FF4-BD9E-BBEE49C1D2BD}</Project>
       <Name>gtest_main</Name>
     </ProjectReference>
   </ItemGroup>

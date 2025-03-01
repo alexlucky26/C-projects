@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CustomBuild Include="D:\C++ projects\otus-cpp\build\CMakeFiles\f1d5bbdc6dffb227690a27129facef80\RUN_TESTS_force.rule">
+    <CustomBuild Include="D:\C-projects\otus-cpp\build\CMakeFiles\b76dab4640d6e4b91fdc64cbb1f7dbc6\RUN_TESTS_force.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
-      <UniqueIdentifier>{CB8D360A-804E-3335-AE57-B790F1D274F1}</UniqueIdentifier>
+      <UniqueIdentifier>{056E44B3-5931-348A-99B2-D90E13BD7065}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
