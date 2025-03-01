@@ -19,11 +19,13 @@ jobs:
       - name: Find .deb file
         id: find_deb
         run: |
-          DEB_FILE=$(find build -name "helloworld-*.deb")
+          DEB_FILE=$(find build -name "helloworld-0.0.*-Linux.deb" | head -n 1)
+          if [[ -z "${DEB_FILE}" ]]; then
+            echo "Error: .deb file not found!"
+            exit 1
+          fi
           echo "DEB_FILE=${DEB_FILE}" | tee output.txt
-          echo "DEB_FILE<<EOF" >> $GITHUB_OUTPUT
-          echo "${DEB_FILE}" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo "DEB_FILE=${DEB_FILE}" >> $GITHUB_OUTPUT
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
