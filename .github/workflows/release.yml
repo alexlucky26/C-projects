@@ -13,10 +13,10 @@ jobs:
       - run: sudo apt upgrade cmake
       - run: sudo apt-get install -y cmake ninja-build g++
       - run: cmake -B build -G "Ninja" -DWITH_GOOGLE_TEST=ON -DPATCH_VERSION=${{ github.run_number }}
-      - run: cmake --build .
+      - run: cmake --build build
       #- run: ctest --test-dir build --output-on-failure 
-      - run: cmake --build . --target test
-      - run: cmake --build . --target package
+      - run: cmake --build build --target test 
+      - run: cmake --build build --target package
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
