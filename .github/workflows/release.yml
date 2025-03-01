@@ -20,7 +20,10 @@ jobs:
         id: find_deb
         run: |
           DEB_FILE=$(find build -name "helloworld-*.deb")
-          echo "DEB_FILE=${DEB_FILE}" >> $GITHUB_OUTPUT
+          echo "DEB_FILE=${DEB_FILE}" | tee output.txt
+          echo "DEB_FILE<<EOF" >> $GITHUB_OUTPUT
+          echo "${DEB_FILE}" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
