@@ -39,13 +39,13 @@ protected:
 void IpFilterTest::CompareIpPools(ip_pool_type& pool, std::vector<std::string>& expected)
 {
     ASSERT_EQ(pool.size(), expected.size());
-    for (int pool_idx = 0; pool_idx < pool.size(); ++pool_idx)
+    for (size_t pool_idx = 0; pool_idx < pool.size(); ++pool_idx)
     {
         string ip_buf = string();
         const testing::internal::Strings& full_ip = pool[pool_idx]; 
-        for (int i = 0; i < full_ip.size(); ++i)
+        for (size_t i = 0; i < full_ip.size(); ++i)
         {
-            ip_buf += i != full_ip.size() - 1 ? full_ip[i] + '.' : full_ip[i];
+            ip_buf += (i != full_ip.size() - 1) ? full_ip[i] + '.' : full_ip[i];
         }
         ASSERT_EQ(ip_buf, expected[pool_idx]);
     }

@@ -25,7 +25,7 @@ static void print_ips(const ip_pool_type& ips)
 
 bool lexic_sort(const vector<string>& ip1, const vector<string>& ip2)
 {
-	for (int i = 0; i < min(ip1.size(), ip2.size()); ++i)
+	for (size_t i = 0; i < min(ip1.size(), ip2.size()); ++i)
 	{
 		if (ip1[i] != ip2[i])
 		{
@@ -132,7 +132,7 @@ ip_pool_type ip_filter::filter_any(const int anyElem)
     ip_pool_type ip_buf;
     for (const auto& ip_elem : ip_pool)
     {
-        for (int arg_counter = 0; arg_counter < ip_elem.size(); ++arg_counter)
+        for (size_t arg_counter = 0; arg_counter < ip_elem.size(); ++arg_counter)
         {
             int num_ip = stoi(ip_elem.at(arg_counter));
             if (anyElem == num_ip)
