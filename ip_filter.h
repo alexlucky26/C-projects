@@ -5,10 +5,13 @@
 /// - Alexander Lukichev
 #include <string>
 #include <vector>
+#include <array>
 
 using namespace std;
 
-typedef vector<vector<string>> ip_pool_type;
+#define IP_ADRESS_SIZE 4
+typedef array<int, IP_ADRESS_SIZE> ip_elem;
+typedef vector<ip_elem> ip_pool_type;
 
 class ip_filter 
 {

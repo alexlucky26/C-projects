@@ -29,60 +29,50 @@ protected:
         };
         for(string line : test_adresses)
         {
-            test_pool.push_back(pool_filter.split(line, '.'));
+            vector<string> v = pool_filter.split(line, '.');
+            ip_elem ip;
+            for (size_t i = 0; i < ip.size(); ++i)
+            {
+                ip[i] = stoi(v[i]);
+            }
+            test_pool.push_back(ip);
         }
         pool_filter.SetPool(test_pool);
     }
-    void CompareIpPools(ip_pool_type& pool, std::vector<std::string>& expected);
 };
 
-void IpFilterTest::CompareIpPools(ip_pool_type& pool, std::vector<std::string>& expected)
-{
-    ASSERT_EQ(pool.size(), expected.size());
-    for (size_t pool_idx = 0; pool_idx < pool.size(); ++pool_idx)
-    {
-        string ip_buf = string();
-        const testing::internal::Strings& full_ip = pool[pool_idx]; 
-        for (size_t i = 0; i < full_ip.size(); ++i)
-        {
-            ip_buf += (i != full_ip.size() - 1) ? full_ip[i] + '.' : full_ip[i];
-        }
-        ASSERT_EQ(ip_buf, expected[pool_idx]);
-    }
-}
-
 TEST_F(IpFilterTest, FilterByFirstByte) {
-    auto result = pool_filter.filter({1});
-    std::vector<std::string> expected = {
-        "1.70.44.170",
-        "1.29.168.152",
-        "1.1.234.8"
+    ip_pool_type result = pool_filter.filter({1});
+    ip_pool_type expected = {
+        {1,70,44,170},
+        {1,29,168,152},
+        {1,1,234,8}
     };
-    CompareIpPools(result, expected);
+    ASSERT_EQ(result, expected);
 }
 
 TEST_F(IpFilterTest, FilterByFirstAndSecondBytes) {
-    auto result = pool_filter.filter({46, 70});
-    std::vector<std::string> expected = {
-        "46.70.225.39",
-        "46.70.147.26",
-        "46.70.113.73",
-        "46.70.29.76"
+    ip_pool_type result = pool_filter.filter({46, 70});
+    ip_pool_type expected = {
+        {46,70,225,39},
+        {46,70,147,26},
+        {46,70,113,73},
+        {46,70,29,76}
     };
-    CompareIpPools(result, expected);
+    ASSERT_EQ(result, expected);
 }
 
 TEST_F(IpFilterTest, FilterByAnyByte) {
-    auto result = pool_filter.filter_any(46);
-    std::vector<std::string> expected = {
-        "46.70.225.39",
-        "46.70.147.26",
-        "46.70.113.73",
-        "46.70.29.76",
-        "186.204.34.46",
-        "46.161.63.66"
+    ip_pool_type result = pool_filter.filter_any(46);
+    ip_pool_type expected = {
+        {46,70,225,39},
+        {46,70,147,26},
+        {46,70,113,73},
+        {46,70,29,76},
+        {186,204,34,46},
+        {46,161,63,66}
     };
-    CompareIpPools(result, expected);
+    ASSERT_EQ(result, expected);
 }
 
 int main(int argc, char **argv) {

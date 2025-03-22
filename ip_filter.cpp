@@ -10,7 +10,7 @@ static void print_ips(const ip_pool_type& ips)
 {
     for(ip_pool_type::const_iterator ip = ips.cbegin(); ip != ips.cend(); ++ip)
     {
-        for(vector<string>::const_iterator ip_part = ip->cbegin(); ip_part != ip->cend(); ++ip_part)
+        for(ip_elem::const_iterator ip_part = ip->cbegin(); ip_part != ip->cend(); ++ip_part)
         {
             if (ip_part != ip->cbegin())
             {
@@ -23,32 +23,32 @@ static void print_ips(const ip_pool_type& ips)
     cout << "///////////////////\n";
 }
 
-bool lexic_sort(const vector<string>& ip1, const vector<string>& ip2)
+bool lexic_sort(const ip_elem& ip1, const ip_elem& ip2)
 {
-	for (size_t i = 0; i < min(ip1.size(), ip2.size()); ++i)
+	for (size_t i = 0; i < IP_ADRESS_SIZE; ++i)
 	{
 		if (ip1[i] != ip2[i])
-		{
-			int numIp1 = stoi(ip1[i]);
-			int numIp2 = stoi(ip2[i]);
-			return numIp1 > numIp2;
-		}
+			return ip1[i] > ip2[i];
 	}
 	return ip1.size() > ip2.size();
 };
 
 ip_filter::ip_filter()
 {
-    // use the command on Windows to read the file: type ip_filter.tsv | helloworld_cli.exe
+    // use the command on Windows to read the file: type ip_filter.tsv | ip_filter_cli.exe
     for(string line; getline(cin, line);)
     {
         vector<string> v = split(line, '\t');
-        ip_pool.push_back(split(v.at(0), '.'));
+        v = split(v.at(0), '.');
+        ip_elem conv_ip_elem;
+        for (size_t i = 0; i < IP_ADRESS_SIZE; ++i)
+            conv_ip_elem[i] = stoi(v.at(i));
+        ip_pool.push_back(conv_ip_elem);
     }
 
 	sort(ip_pool.begin(), ip_pool.end(), lexic_sort);
     print_ips(ip_pool);
-}
+};
 
 vector<string> ip_filter::split(const string &str, char d)
 {
@@ -90,13 +90,7 @@ vector<vector<string>> filter(T t, Args... args) {
 // The filtration function for ip adresses that gets as input some parts of ip adresses (a mask) up to 4 ip pieces and returns filtrated adresses based on this mask.
 ip_pool_type ip_filter::filter(const initializer_list<int>& args) 
 {
-    const int MAX_ARGS_AMOUNT = 4;
     ip_pool_type ip_buf;
-    if (args.size() > MAX_ARGS_AMOUNT) 
-    {
-        cerr << "filter(initializer_list<int> args) function cannot take more than 4 arguments.\n";
-        return ip_buf;
-    }
 
     for (const auto& ip_elem : ip_pool)
     {
@@ -109,7 +103,7 @@ ip_pool_type ip_filter::filter(const initializer_list<int>& args)
         size_t i = 0;
         for (int arg : args) 
         {
-            if (stoi(ip_elem.at(i)) != arg) 
+            if (ip_elem.at(i) != arg) 
             {
                 match = false;
                 break;
@@ -134,7 +128,7 @@ ip_pool_type ip_filter::filter_any(const int anyElem)
     {
         for (size_t arg_counter = 0; arg_counter < ip_elem.size(); ++arg_counter)
         {
-            int num_ip = stoi(ip_elem.at(arg_counter));
+            int num_ip = ip_elem.at(arg_counter);
             if (anyElem == num_ip)
             {
                 ip_buf.push_back(ip_elem);
