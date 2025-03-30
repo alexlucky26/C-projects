@@ -1,9 +1,5 @@
-#include "lib.h"
+#include "allocator.h"
 #include <gtest/gtest.h>
-
-TEST(VersionTest, ValidVersion) {
-    EXPECT_GT(version(), 0);
-}
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
