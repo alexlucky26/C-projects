@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.31.5)
 
 set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
 set(PROJECT_VERSION 0.0.${PATCH_VERSION})
+set(CPACK_PACKAGE_VERSION 0.0.${PATCH_VERSION})
 
 option(WITH_GOOGLE_TEST "Whether to build Google test" OFF)
 
