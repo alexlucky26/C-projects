@@ -30,7 +30,15 @@ struct custom_allocator {
     }
 
     void deallocate(T* p, [[maybe_unused]] std::size_t n) noexcept {
-        if (p) ::operator delete(p);
+        if (p == nullptr) return;
+
+        //принадлежит ли указатель нашему пулу
+        uint8_t* ptr = reinterpret_cast<uint8_t*>(p);
+        if (ptr >= memory_pool && ptr < memory_pool + pool_size) {
+            return;
+        }
+        
+        ::operator delete(p);
     }
 
     template <typename U, typename... Args>
