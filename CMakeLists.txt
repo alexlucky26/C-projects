@@ -3,37 +3,39 @@ cmake_minimum_required(VERSION 3.31.5)
 set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
 set(PROJECT_VERSION 0.0.${PATCH_VERSION})
 
-project(helloworld VERSION ${PROJECT_VERSION})
+project(print_ip_lib VERSION ${PROJECT_VERSION})
 
-option(WITH_GOOGLE_TEST "Whether to build Google test" ON)
+option(WITH_GOOGLE_TEST "Whether to build Google test" OFF)
 
 configure_file(version.h.in version.h)
 
-add_executable(helloworld_cli main.cpp)
-add_library(helloworld lib.cpp)
+add_executable(print_ip main.cpp)
 
-set_target_properties(helloworld_cli helloworld PROPERTIES
+# библиотека как INTERFACE, так как реализация в заголовочном файле
+add_library(print_ip_lib INTERFACE)
+
+target_sources(print_ip_lib INTERFACE print_ip_lib.hpp)
+target_include_directories(print_ip_lib INTERFACE 
+    "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${CMAKE_BINARY_DIR}"
+)
+
+set_target_properties(print_ip PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
 )
 
-target_include_directories(helloworld
-    PRIVATE "${CMAKE_BINARY_DIR}"
-)
-
-target_link_libraries(helloworld_cli PRIVATE
-    helloworld
-)
+target_link_libraries(print_ip PRIVATE print_ip_lib)
 
 if (WITH_GOOGLE_TEST)
-include(FetchContent)
+    include(FetchContent)
 
-FetchContent_Declare(
-    googletest
-    URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
-)
+    FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
+    )
 
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     FetchContent_MakeAvailable(googletest)
 
     enable_testing()
@@ -46,31 +48,24 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
     target_link_libraries(test_version PRIVATE
         gtest_main
-        helloworld
+        print_ip_lib
     )
 
     add_test(NAME test_version COMMAND test_version)
 endif()
 
 if (MSVC)
-    target_compile_options(helloworld_cli PRIVATE
-        /W4
-    )
-    target_compile_options(helloworld PRIVATE
-        /W4
-    )
+    add_compile_options(/Zc:__cplusplus)
+    target_compile_options(print_ip PRIVATE /W4)
+    
     if(WITH_GOOGLE_TEST)
-        target_compile_options(test_version PRIVATE
-            /W4
-        )
+        target_compile_options(test_version PRIVATE /W4)
     endif()
-else ()
-    target_compile_options(helloworld_cli PRIVATE
+else()
+    target_compile_options(print_ip PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
-    target_compile_options(helloworld PRIVATE
-        -Wall -Wextra -pedantic -Werror
-    )
+    
     if(WITH_GOOGLE_TEST)
         target_compile_options(test_version PRIVATE
             -Wall -Wextra -pedantic -Werror
@@ -78,7 +73,7 @@ else ()
     endif()
 endif()
 
-install(TARGETS helloworld_cli RUNTIME DESTINATION bin)
+install(TARGETS print_ip RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
