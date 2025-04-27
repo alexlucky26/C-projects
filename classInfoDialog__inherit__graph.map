@@ -1,0 +1,5 @@
+<map id="InfoDialog" name="InfoDialog">
+<area shape="rect" id="Node000001" title="Диалоговое окно с информацией для пользователя." alt="" coords="5,79,95,104"/>
+<area shape="rect" id="Node000002" href="$classDialog.html" title="Базовый абстрактный класс диалоговых окон для импорта и экспорта файлов." alt="" coords="18,5,82,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="53,44,53,79,47,79,47,44"/>
+</map>

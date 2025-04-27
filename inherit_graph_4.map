@@ -1,0 +1,9 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classPrimitive.html" title="Базовый класс для всех примитивных фигур." alt="" coords="5,31,87,56"/>
+<area shape="rect" id="Node000001" href="$classCircle.html" title="Класс фигуры &quot;Круг&quot;." alt="" coords="139,5,197,31"/>
+<area shape="poly" id="edge4_Node000000_Node000001" title=" " alt="" coords="100,29,138,21,139,27,101,35"/>
+<area shape="rect" id="Node000002" href="$classSquare.html" title="Класс фигуры &quot;Квадрат&quot;." alt="" coords="135,55,201,80"/>
+<area shape="poly" id="edge5_Node000000_Node000002" title=" " alt="" coords="101,51,135,58,134,64,100,57"/>
+<area shape="rect" id="Node000003" href="$classRectangle.html" title="Класс фигуры &quot;Прямоугольник&quot;." alt="" coords="249,55,336,80"/>
+<area shape="poly" id="edge6_Node000002_Node000003" title=" " alt="" coords="215,65,249,65,249,70,215,70"/>
+</map>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Print IP: main.cpp File Reference</title>
+<title>Editor: main.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -25,9 +25,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Print IP
+   <div id="projectname">Editor
    </div>
-   <div id="projectbrief">A library for printing IP addresses in various formats</div>
+   <div id="projectbrief">Graphic editor template that uses MVC pattern</div>
   </td>
  </tr>
  </tbody>
@@ -91,45 +91,63 @@ $(document).ready(function(){initNavTree('main_8cpp.html',''); initResizable(); 
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">main.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="print__ip__lib_8hpp_source.html">print_ip_lib.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="Processor_8h_source.html">Processor.h</a>&quot;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;functional&gt;</code><br />
+<code>#include &lt;map&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
-<code>#include &lt;list&gt;</code><br />
-<code>#include &lt;cstdint&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for main.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="main_8cpp__incl.png" border="0" usemap="#amain_8cpp" alt=""/></div>
 <map name="amain_8cpp" id="amain_8cpp">
-<area shape="rect" title=" " alt="" coords="445,5,527,31"/>
-<area shape="rect" href="print__ip__lib_8hpp.html" title=" " alt="" coords="234,79,357,104"/>
-<area shape="poly" title=" " alt="" coords="456,33,340,76,338,71,454,28"/>
-<area shape="rect" title=" " alt="" coords="406,152,486,177"/>
-<area shape="poly" title=" " alt="" coords="477,33,460,53,447,79,443,109,444,138,439,138,437,109,442,78,456,51,473,29"/>
-<area shape="rect" title=" " alt="" coords="457,79,515,104"/>
-<area shape="poly" title=" " alt="" coords="489,31,489,65,483,65,483,31"/>
-<area shape="rect" title=" " alt="" coords="539,79,582,104"/>
-<area shape="poly" title=" " alt="" coords="500,29,540,67,537,71,496,33"/>
-<area shape="rect" title=" " alt="" coords="606,79,673,104"/>
-<area shape="poly" title=" " alt="" coords="512,28,603,70,601,75,510,33"/>
-<area shape="rect" title=" " alt="" coords="5,152,97,177"/>
-<area shape="poly" title=" " alt="" coords="257,107,105,151,103,146,255,101"/>
-<area shape="rect" title=" " alt="" coords="121,152,184,177"/>
-<area shape="poly" title=" " alt="" coords="274,106,189,148,187,143,271,102"/>
-<area shape="poly" title=" " alt="" coords="321,102,410,144,408,148,318,106"/>
-<area shape="rect" title=" " alt="" coords="209,152,283,177"/>
-<area shape="poly" title=" " alt="" coords="289,106,264,142,260,139,285,103"/>
-<area shape="rect" title=" " alt="" coords="307,152,382,177"/>
-<area shape="poly" title=" " alt="" coords="306,103,331,139,327,142,301,106"/>
+<area shape="rect" title=" " alt="" coords="404,5,487,31"/>
+<area shape="rect" href="Processor_8h.html" title=" " alt="" coords="177,79,273,104"/>
+<area shape="poly" title=" " alt="" coords="411,33,274,77,273,72,409,28"/>
+<area shape="rect" title=" " alt="" coords="297,79,377,104"/>
+<area shape="poly" title=" " alt="" coords="429,33,368,73,365,69,427,28"/>
+<area shape="rect" title=" " alt="" coords="402,79,489,104"/>
+<area shape="poly" title=" " alt="" coords="448,31,448,65,443,65,443,31"/>
+<area shape="rect" title=" " alt="" coords="513,79,564,104"/>
+<area shape="poly" title=" " alt="" coords="462,29,514,68,511,72,459,33"/>
+<area shape="rect" title=" " alt="" coords="588,79,647,104"/>
+<area shape="poly" title=" " alt="" coords="474,28,578,71,576,76,472,33"/>
+<area shape="rect" title=" " alt="" coords="145,225,223,251"/>
+<area shape="poly" title=" " alt="" coords="225,105,194,213,188,211,219,104"/>
+<area shape="rect" href="Primitive_8h.html" title=" " alt="" coords="221,152,315,177"/>
+<area shape="poly" title=" " alt="" coords="235,103,256,139,252,142,230,106"/>
+<area shape="rect" href="FileDialog_8h.html" title=" " alt="" coords="5,152,147,177"/>
+<area shape="poly" title=" " alt="" coords="202,106,114,148,112,144,200,102"/>
+<area shape="rect" href="Viewport_8h.html" title=" " alt="" coords="339,152,474,177"/>
+<area shape="poly" title=" " alt="" coords="255,102,365,144,363,149,253,107"/>
+<area shape="poly" title=" " alt="" coords="256,179,210,218,207,214,253,175"/>
+<area shape="rect" title=" " alt="" coords="247,225,310,251"/>
+<area shape="poly" title=" " alt="" coords="272,177,278,211,272,212,267,178"/>
+<area shape="rect" href="BasicTypes_8h.html" title=" " alt="" coords="335,225,441,251"/>
+<area shape="poly" title=" " alt="" coords="289,175,358,216,355,220,286,180"/>
+<area shape="poly" title=" " alt="" coords="95,175,156,215,153,220,92,180"/>
+<area shape="rect" title=" " alt="" coords="31,225,121,251"/>
+<area shape="poly" title=" " alt="" coords="79,178,79,212,73,212,73,178"/>
+<area shape="poly" title=" " alt="" coords="387,180,313,221,311,216,385,175"/>
+<area shape="poly" title=" " alt="" coords="406,178,397,213,392,212,401,177"/>
+<area shape="rect" title=" " alt="" coords="465,225,540,251"/>
+<area shape="poly" title=" " alt="" coords="424,175,477,215,474,219,421,180"/>
 </map>
 </div>
 </div>
 <p><a href="main_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGUI__API.html">GUI_API</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mock-класс для обработки событий от пользовательского интерфейса.  <a href="classGUI__API.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a2c3f6775325c30275d11c6abee2db6a0" id="r_a2c3f6775325c30275d11c6abee2db6a0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8cpp.html#a2c3f6775325c30275d11c6abee2db6a0">main</a> (int, char **)</td></tr>
@@ -162,7 +180,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8cpp_source.html#l00010">10</a> of file <a class="el" href="main_8cpp_source.html">main.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8cpp_source.html#l00092">92</a> of file <a class="el" href="main_8cpp_source.html">main.cpp</a>.</p>
 
 </div>
 </div>

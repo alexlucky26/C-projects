@@ -1,0 +1,18 @@
+<map id="Square" name="Square">
+<area shape="rect" id="Node000001" title="Класс фигуры &quot;Квадрат&quot;." alt="" coords="177,461,243,487"/>
+<area shape="rect" id="Node000002" href="$classPrimitive.html" title="Базовый класс для всех примитивных фигур." alt="" coords="169,387,251,412"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="213,426,213,461,207,461,207,426"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="121,284,299,324"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="213,338,213,386,207,386,207,338"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="48,194,231,219"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="158,229,198,282,194,285,154,232"/>
+<area shape="rect" id="Node000005" href="$structPoint.html" title=" " alt="" coords="5,93,60,119"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="57,126,128,192,125,196,54,130"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="85,93,242,119"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="144,131,137,143,134,170,138,193,133,194,128,170,131,142,139,128"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="203,5,241,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="209,44,174,94,169,91,204,41"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="215,143,344,168"/>
+<area shape="poly" id="edge8_Node000008_Node000007" title=" " alt="" coords="235,42,256,92,277,141,272,143,252,94,230,44"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="278,182,268,220,251,261,233,285,228,282,246,259,263,219,273,181"/>
+</map>

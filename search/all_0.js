@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['are_5fall_5fsame_5fv_0',['are_all_same_v',['../print__ip__lib_8hpp.html#a2d6687e8e005e784265277b40574a132',1,'print_ip_lib.hpp']]]
+  ['addlistener_0',['addlistener',['../classGUI__API.html#a3d73c7ccd65ebab4fc2bdbb2b2a92e13',1,'GUI_API::AddListener(string name, function&lt; void(PrimitiveType)&gt; listener)'],['../classGUI__API.html#a33403784f7a93c251b588d076fa29867',1,'GUI_API::AddListener(string name, function&lt; void()&gt; listener)']]]
 ];
