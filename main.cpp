@@ -5,53 +5,88 @@
 #include <string>
 
 using namespace std;
-
-/// When a User clicks somewhere in GUI, it will generate an Event for a listener! This event is handled by the Processor
+/**
+ * @class GUI_API
+ * @brief Mock-класс для обработки событий от пользовательского интерфейса.
+ * @details При нажатии пользователем на кнопку в GUI генерируется событие, которое перехватывается GUI_API и передаётся соответствующему обработчику в Processor.
+ */
 class GUI_API {
 	map<string, function<void()>> common_listeners;
 	function<void(PrimitiveType)> create_primitive_listener;
 public:
-	GUI_API() {};
+	GUI_API() {}
 
+	/**
+     * @brief Добавить обработчик событий создания фигуры с параметром - типом фигуры.
+     * @param name Имя события.
+     * @param listener Функция-обработчик для создания фигуры.
+     */
 	void AddListener([[maybe_unused]] string name, function<void(PrimitiveType)> listener) {
 		create_primitive_listener = move(listener);
 	}
 
+	/**
+     * @brief Добавить обработчик событий создания фигуры (без параметров).
+     * @param name Имя события.
+     * @param listener Функция-обработчик для создания фигуры.
+     */
 	void AddListener(string name, function<void()> listener) {
 		common_listeners.insert_or_assign(name, move(listener));
 	}
 
+	/**
+     * @brief Обработать нажатие на кнопку "Новый документ".
+     */
 	void OnBtnClick_NewDocument() {
 		const auto& it = common_listeners.find("NewDocument");
 		if (it != common_listeners.end())
 			it->second();
-	};
+	}
+
+	/**
+     * @brief Обработать нажатие на кнопку "Импорт файла".
+     */
 	void OnBtnClick_ImportFile() {
 		const auto& it = common_listeners.find("ImportFile");
 		if (it != common_listeners.end())
 			it->second();
-	};
+	}
+
+	/**
+     * @brief Обработать нажатие на кнопку "Экспорт файла".
+     */
 	void OnBtnClick_ExportFile() {
 		const auto& it = common_listeners.find("ExportFile");
 		if (it != common_listeners.end())
 			it->second();
-	};
+	}
 
-	// When a user clicks on CreateFigure, a popup window appears to select a figure -> Circle, Square or Rectangle. That's why here is 3 calls
+	/**
+     * @brief Обработать нажатие на кнопку создания фигуры типа Circle. Планируется, что в UI будет выбор Create a figure и выпадает popup с типом фигуры.
+     */
 	void OnBtnClick_CreateFigure_Circle() {
 		create_primitive_listener(PrimitiveType::Circle);
-	};
+	}
+	/**
+     * @brief Обработать нажатие на кнопку создания фигуры типа Square. Планируется, что в UI будет выбор Create a figure и выпадает popup с типом фигуры.
+     */
 	void OnBtnClick_CreateFigure_Square() {
 		create_primitive_listener(PrimitiveType::Square);
-	};
+	}
+	/**
+     * @brief Обработать нажатие на кнопку создания фигуры типа Rectangle. Планируется, что в UI будет выбор Create a figure и выпадает popup с типом фигуры.
+     */
 	void OnBtnClick_CreateFigure_Rectangle() {
 		create_primitive_listener(PrimitiveType::Rectangle);
-	};
+	}
+	/**
+     * @brief Обработать нажатие на кнопку удаления фигуры.
+     */
 	void OnBtnClick_DeleteFigure() {
 		const auto& it = common_listeners.find("DeleteFigure");
 		if (it != common_listeners.end())
 			it->second();
-	};
+	}
 };
 
 int main(int, char **) {
