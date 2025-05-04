@@ -1,9 +1,52 @@
-#include "lib.h"
-
-#include <iostream>
+#include "matrix.hpp"
 
 int main(int, char **) {
-	std::cout << "Version: " << version() << std::endl;
-	std::cout << "Hello, world!" << std::endl;
+	Matrix<int, -1> matrix;
+	
+	// заполнение основной и побочной диагоналей
+	{
+		const size_t minValue = 0;
+		const size_t maxValue = 9;
+		size_t rIndex = maxValue;
+		for (size_t index = minValue; index <= maxValue; ++index)
+		{
+			matrix[index][index] = index;
+			matrix[index][rIndex] = rIndex;
+			--rIndex; 
+		}
+
+		for (size_t firstIndex = minValue + 1; firstIndex <= maxValue - 1; ++firstIndex)
+		{
+			for (size_t secondIndex = minValue; secondIndex <= maxValue; ++secondIndex)
+			{
+				if (firstIndex == minValue + 1 && secondIndex == 0)
+				{
+					std::cout << "  ";
+					continue;
+				}
+				std::cout << matrix[firstIndex][secondIndex] << " ";
+				if (firstIndex == maxValue - 1 && secondIndex == maxValue - 1) //8.8 finish
+					break;
+			}
+			std::cout << endl;
+		}
+	}
+
+	std::cout << matrix.size() << endl; // сайз вообще всех ячеек
+	std::cout << matrix.used_size() << endl; // сайз только заполненных кастомными значениями
+
+	for(auto c: matrix)
+	{
+		int x = c.first.first;
+		int y = c.first.second;
+		int v = c.second;
+
+		std::cout << "[" << x << "," << y << "] = " << v << "; ";
+	}
+	std::cout << endl;
+
+	((matrix[100][100] = 314) = 0) = 217;
+	std::cout << "The sentense: ((matrix[100][100] = 314) = 0) = 217 is " << matrix[100][100] << endl;
+
 	return 0;
 }
