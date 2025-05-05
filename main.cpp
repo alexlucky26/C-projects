@@ -1,7 +1,7 @@
 #include "matrix.hpp"
 
 int main(int, char **) {
-	Matrix<int, -1> matrix;
+	Matrix<int, 0> matrix;
 	
 	// заполнение основной и побочной диагоналей
 	{
