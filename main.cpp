@@ -15,18 +15,11 @@ int main(int, char **) {
 			--rIndex; 
 		}
 
-		for (size_t firstIndex = minValue + 1; firstIndex <= maxValue - 1; ++firstIndex)
+		for (size_t firstIndex = minValue + 1; firstIndex < maxValue; ++firstIndex)
 		{
-			for (size_t secondIndex = minValue; secondIndex <= maxValue; ++secondIndex)
+			for (size_t secondIndex = minValue + 1; secondIndex < maxValue; ++secondIndex)
 			{
-				if (firstIndex == minValue + 1 && secondIndex == 0)
-				{
-					std::cout << "  ";
-					continue;
-				}
 				std::cout << matrix[firstIndex][secondIndex] << " ";
-				if (firstIndex == maxValue - 1 && secondIndex == maxValue - 1) //8.8 finish
-					break;
 			}
 			std::cout << endl;
 		}
