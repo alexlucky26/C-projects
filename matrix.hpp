@@ -14,11 +14,33 @@ public:
 		return matrix.size();
 	};
 
-    /// @brief функция, возвращающая количество ячеек, которые заполнены НЕ ДЕФОЛТНЫМИ значениями
-    /// @return 
-    size_t used_size() {
-        return std::count_if(matrix.begin(), matrix.end(), [&](pair<pair<CustomType, CustomType>, CustomType> elem) { return elem.second != defaultValue; });
-    }
+	// чтобы реализовать присваивание не добавляя в мапу элементы с дефолтными значениями
+	class CellProxy {
+		map<pair<CustomType, CustomType>, CustomType>& matrixRef;
+		pair<CustomType, CustomType> key;
+		CustomType defValue;
+	
+	public:
+		CellProxy(map<pair<CustomType, CustomType>, CustomType>& m, pair<CustomType, CustomType> k, CustomType defValue)
+			: matrixRef(m), key(k), defValue(defValue) {}
+	
+		CellProxy& operator=(CustomType value) {
+			if (value == defValue) {
+				matrixRef.erase(key); // Удаляем, если присвоили defaultValue
+			} else {
+				matrixRef[key] = value;
+			}
+			return *this;
+		}
+	
+		operator CustomType() const {
+			auto it = matrixRef.find(key);
+			if (it != matrixRef.end()) {
+				return it->second;
+			}
+			return defValue;
+		}
+	};
 
 	// Прокси-класс для реализации matrix[a][b]
 	class RowProxy {
@@ -30,12 +52,10 @@ public:
 		RowProxy(map<pair<CustomType, CustomType>, CustomType>& m, const CustomType r, const CustomType defValue)
 			: matrixRef(m), row(r), defValue(defValue) {}
 
-        CustomType& operator[](CustomType col) {
-            auto key = std::make_pair(row, col);
-            if (matrixRef.find(key) == matrixRef.end())
-                matrixRef[key] = defaultValue;
-            return matrixRef[key];
-        }
+		CellProxy operator[](CustomType col) {
+			auto key = std::make_pair(row, col);
+			return CellProxy(matrixRef, key, defValue);
+		}
 	};
 
 	RowProxy operator[](CustomType row) {
