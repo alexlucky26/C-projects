@@ -26,7 +26,8 @@ public:
 	
 		CellProxy& operator=(CustomType value) {
 			if (value == defValue) {
-				matrixRef.erase(key); // Удаляем, если присвоили defaultValue
+				if (matrixRef.find(key) != matrixRef.end())
+					matrixRef.erase(key); // Удаляем элемент, если ему присвоили defaultValue
 			} else {
 				matrixRef[key] = value;
 			}
