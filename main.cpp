@@ -11,7 +11,7 @@ int main(int, char **) {
 		for (size_t index = minValue; index <= maxValue; ++index)
 		{
 			matrix[index][index] = index; // от [0,0] до [9,9] зачения от 0 до 9
-			matrix[index][rIndex] = rIndex; // от [0,9] до [9,0] зачения от 9 до 0
+			matrix[index][rIndex] = index; // от [0,9] до [9,0] зачения от 9 до 0
 			--rIndex; 
 		}
 		
