@@ -15,6 +15,7 @@ void BulkParser::ProcessCommand(const string& command)
             if (!staticBlock.empty()) 
             {
                 FlushBlock(staticBlock);
+                staticBlock.clear();
             }
             braceCounter = 1;
         }
@@ -56,6 +57,7 @@ void BulkParser::Finalize()
     if (braceCounter == 0 && !staticBlock.empty()) 
     {
         FlushBlock(staticBlock);
+        staticBlock.clear();
     }
 }
 
