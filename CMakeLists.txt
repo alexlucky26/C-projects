@@ -3,26 +3,26 @@ cmake_minimum_required(VERSION 3.31.5)
 set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
 set(PROJECT_VERSION 0.0.${PATCH_VERSION})
 
-project(helloworld VERSION ${PROJECT_VERSION})
+project(bulk_lib VERSION ${PROJECT_VERSION})
 
-option(WITH_GOOGLE_TEST "Whether to build Google test" ON)
+option(WITH_GOOGLE_TEST "Whether to build Google test" OFF)
 
 configure_file(version.h.in version.h)
 
-add_executable(helloworld_cli main.cpp)
-add_library(helloworld lib.cpp)
+add_executable(bulk main.cpp)
+add_library(bulk_lib BulkParser.cpp)
 
-set_target_properties(helloworld_cli helloworld PROPERTIES
+set_target_properties(bulk bulk_lib PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
 )
 
-target_include_directories(helloworld
+target_include_directories(bulk_lib
     PRIVATE "${CMAKE_BINARY_DIR}"
 )
 
-target_link_libraries(helloworld_cli PRIVATE
-    helloworld
+target_link_libraries(bulk PRIVATE
+    bulk_lib
 )
 
 if (WITH_GOOGLE_TEST)
@@ -46,17 +46,17 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
     target_link_libraries(test_version PRIVATE
         gtest_main
-        helloworld
+        bulk_lib
     )
 
     add_test(NAME test_version COMMAND test_version)
 endif()
 
 if (MSVC)
-    target_compile_options(helloworld_cli PRIVATE
+    target_compile_options(bulk PRIVATE
         /W4
     )
-    target_compile_options(helloworld PRIVATE
+    target_compile_options(bulk_lib PRIVATE
         /W4
     )
     if(WITH_GOOGLE_TEST)
@@ -65,10 +65,10 @@ if (MSVC)
         )
     endif()
 else ()
-    target_compile_options(helloworld_cli PRIVATE
+    target_compile_options(bulk PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
-    target_compile_options(helloworld PRIVATE
+    target_compile_options(bulk_lib PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
     if(WITH_GOOGLE_TEST)
@@ -78,7 +78,7 @@ else ()
     endif()
 endif()
 
-install(TARGETS helloworld_cli RUNTIME DESTINATION bin)
+install(TARGETS bulk RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
