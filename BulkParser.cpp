@@ -2,51 +2,35 @@
 
 /// @brief processing 'static' and 'dynamic' commands
 /// @param command 
-void BulkParser::ProcessCommand(const string& command) 
+void BulkParser::ParseCommand(const string& command) 
 {
-    if (command == "{") // start of a dynamic block "{"
+    if (command == "{") 
     {
-        if (!dynamicBlock.empty()) 
-        {
-            braceCounter++;
-        } 
-        else 
-        {
-            if (!staticBlock.empty()) 
-            {
-                FlushBlock(staticBlock);
-                staticBlock.clear();
-            }
-            braceCounter = 1;
+        if (braceCounter == 0) {
+            staticProcessor.FlushBlock();
         }
+        braceCounter++;
     } 
-    else if (command == "}") // end of a dynamic block "}"
-
+    else if (command == "}") 
     {
         if (braceCounter > 0) 
         {
             braceCounter--;
             if (braceCounter == 0) 
             {
-                FlushBlock(dynamicBlock);
-                dynamicBlock.clear();
+                dynamicProcessor.FlushBlock();
             }
         }
     } 
-    else 
+    else
     {
-        if (braceCounter > 0)
+        if (braceCounter > 0) 
         {
-            dynamicBlock.push_back(command);
+            dynamicProcessor.ProcessCommand(command);
         } 
-        else // finally a static block case
+        else 
         {
-            staticBlock.push_back(command);
-            if (staticBlock.size() == N) 
-            {
-                FlushBlock(staticBlock);
-                staticBlock.clear();
-            }
+            staticProcessor.ProcessCommand(command);
         }
     }
 }
@@ -54,20 +38,17 @@ void BulkParser::ProcessCommand(const string& command)
 /// @brief finish an input and flush all that remains in a static block
 void BulkParser::Finalize()
 {
-    if (braceCounter == 0 && !staticBlock.empty()) 
-    {
-        FlushBlock(staticBlock);
-        staticBlock.clear();
+    if (braceCounter == 0) {
+        staticProcessor.FlushBlock();
     }
 }
 
 /// @brief output of a block into a file (and into cout)
 /// @param block commands
-void BulkParser::FlushBlock(const vector<string>& block) 
+void BlockProcessor::FlushBlock() 
 {
     if (block.empty()) return;
-
-    time_t timestamp = time(nullptr);
+       time_t timestamp = time(nullptr);
     stringstream logFilename;
     logFilename << "bulk" << timestamp << ".log";
 
@@ -84,7 +65,18 @@ void BulkParser::FlushBlock(const vector<string>& block)
             logFile << "\n";
         }
     }
-
     cout << endl;
     logFile.close();
+    block.clear();
+}
+
+void StaticBlockProcessor::ProcessCommand(const string& command) {
+    block.push_back(command);
+    if (block.size() == N) {
+        FlushBlock();
+    }
+}
+
+void DynamicBlockProcessor::ProcessCommand(const string& command) {
+    block.push_back(command);
 }
