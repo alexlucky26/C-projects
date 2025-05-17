@@ -15,6 +15,18 @@ int main(int, char **) {
 			--rIndex; 
 		}
 		
+		// Вывожу всю заполненную матрицу
+		std::cout << "The fragment from [0.0] to [9.9]: " << endl; 
+		for (size_t firstIndex = minValue; firstIndex <= maxValue; ++firstIndex)
+		{
+			for (size_t secondIndex = minValue; secondIndex <= maxValue; ++secondIndex)
+			{
+				std::cout << matrix[firstIndex][secondIndex] << " ";
+			}
+			std::cout << endl;
+		}
+		std::cout << endl;
+
 		// Необходимо вывести фрагмент матрицы от [1,1] до [8,8]. Между столбцами пробел. Каждая строка матрицы на новой строке консоли.
 		std::cout << "The fragment from [1.1] to [8.8]: " << endl; 
 		for (size_t firstIndex = minValue + 1; firstIndex < maxValue; ++firstIndex)
@@ -25,11 +37,13 @@ int main(int, char **) {
 			}
 			std::cout << endl;
 		}
+		std::cout << endl;
 	}
 
 	std::cout << "Amount of used elements (there are not default):" << endl; 
 	// Вывести количество занятых ячеек.
 	std::cout << matrix.size() << endl;
+	std::cout << endl;
 
 	// Вывести все занятые ячейки вместе со своими позициями.
 	std::cout << "All used elements:" << endl; 
