@@ -4,35 +4,73 @@ on:
   push:
     branches:
       - main
+      - bayan
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: true
+          
+      # Установка базовых зависимостей
       - run: sudo apt update
-      - run: sudo apt upgrade cmake
-      - run: sudo apt-get install -y cmake ninja-build g++
-      - run: cmake -B build -G "Ninja" -DWITH_GOOGLE_TEST=ON -DPATCH_VERSION=${{ github.run_number }}
-      - run: cmake --build build
-      - run: cmake --build build --target test
+      - run: sudo apt upgrade -y cmake ninja-build g++
+      
+      # Настройка vcpkg
+      - name: Setup vcpkg
+        uses: actions/setup-vcpkg@v3
+        with:
+          vcpkgDirectory: './vcpkg'
+          
+      # Кеширование vcpkg для ускорения сборок
+      - name: Cache vcpkg
+        uses: actions/cache@v3
+        with:
+          path: |
+            vcpkg/installed
+            vcpkg/packages
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('**/CMakeLists.txt') }}
+          
+      # Установка Boost через vcpkg
+      - name: Install Boost
+        run: vcpkg install boost-filesystem:x64-linux boost-system:x64-linux boost-program-options:x64-linux
+        
+      # Конфигурация проекта
+      - name: Configure CMake
+        run: |
+          cmake -B build -G "Ninja" \
+            -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake \
+            -DWITH_GOOGLE_TEST=ON \
+            -DPATCH_VERSION=${{ github.run_number }}
+            
+      # Сборка проекта
+      - name: Build project
+        run: cmake --build build
+        
+      # Запуск тестов
       - name: Run tests
         run: |
           cd build
           ctest --output-on-failure
-      - run: cmake --build build --target package
+          
+      # Создание .deb пакета
+      - name: Create package
+        run: cmake --build build --target package
+        
+      # Поиск .deb файла
       - name: Find .deb file
         id: find_deb
         run: |
-          DEB_FILE=$(find build -name "helloworld-0.0.*-Linux.deb" | head -n 1)
+          DEB_FILE=$(find build -name "bayan-0.0.*-Linux.deb" | head -n 1)
           if [[ -z "${DEB_FILE}" ]]; then
             echo "Error: .deb file not found!"
             exit 1
           fi
-          echo "DEB_FILE=${DEB_FILE}" | tee output.txt
           echo "DEB_FILE=${DEB_FILE}" >> $GITHUB_OUTPUT
+          
+      # Создание релиза
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -43,6 +81,8 @@ jobs:
           release_name: Release ${{ github.run_number }}
           draft: false
           prerelease: false
+          
+      # Загрузка .deb файла в релиз
       - name: Upload Release Asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
@@ -51,5 +91,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ steps.find_deb.outputs.DEB_FILE }}
-          asset_name: helloworld-0.0.${{ github.run_number }}-Linux.deb
+          asset_name: bayan-0.0.${{ github.run_number }}-Linux.deb
           asset_content_type: application/vnd.debian.binary-package

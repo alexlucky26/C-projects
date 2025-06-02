@@ -3,37 +3,50 @@ cmake_minimum_required(VERSION 3.31.5)
 set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
 set(PROJECT_VERSION 0.0.${PATCH_VERSION})
 
-project(helloworld VERSION ${PROJECT_VERSION})
+project(bayan VERSION ${PROJECT_VERSION})
+
+# Указываем CMake искать пакеты в vcpkg
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};D:/C-projects/vcpkg/scripts/buildsystems")
 
 option(WITH_GOOGLE_TEST "Whether to build Google test" ON)
 
 configure_file(version.h.in version.h)
 
-add_executable(helloworld_cli main.cpp)
-add_library(helloworld lib.cpp)
+add_executable(bayan main.cpp)
+add_library(bayan_lib FileHelper.cpp)
 
-set_target_properties(helloworld_cli helloworld PROPERTIES
+set_target_properties(bayan bayan_lib PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
 )
 
-target_include_directories(helloworld
+target_include_directories(bayan_lib
     PRIVATE "${CMAKE_BINARY_DIR}"
 )
 
-target_link_libraries(helloworld_cli PRIVATE
-    helloworld
+# Поиск Boost через vcpkg
+find_package(Boost REQUIRED COMPONENTS filesystem system program_options crc)
+
+target_link_libraries(bayan_lib PRIVATE
+    Boost::filesystem
+    Boost::system
+    Boost::crc
+)
+
+target_link_libraries(bayan PRIVATE
+    bayan_lib
+    Boost::program_options
 )
 
 if (WITH_GOOGLE_TEST)
-include(FetchContent)
+    include(FetchContent)
 
-FetchContent_Declare(
-    googletest
-    URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
-)
+    FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
+    )
 
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     FetchContent_MakeAvailable(googletest)
 
     enable_testing()
@@ -46,17 +59,17 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
     target_link_libraries(test_version PRIVATE
         gtest_main
-        helloworld
+        bayan_lib
     )
 
     add_test(NAME test_version COMMAND test_version)
 endif()
 
 if (MSVC)
-    target_compile_options(helloworld_cli PRIVATE
+    target_compile_options(bayan PRIVATE
         /W4
     )
-    target_compile_options(helloworld PRIVATE
+    target_compile_options(bayan_lib PRIVATE
         /W4
     )
     if(WITH_GOOGLE_TEST)
@@ -65,10 +78,10 @@ if (MSVC)
         )
     endif()
 else ()
-    target_compile_options(helloworld_cli PRIVATE
+    target_compile_options(bayan PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
-    target_compile_options(helloworld PRIVATE
+    target_compile_options(bayan_lib PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
     if(WITH_GOOGLE_TEST)
@@ -78,7 +91,7 @@ else ()
     endif()
 endif()
 
-install(TARGETS helloworld_cli RUNTIME DESTINATION bin)
+install(TARGETS bayan RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
