@@ -7,23 +7,23 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
-        
+
     - name: Install tools
       run: |
         sudo apt-get update
-        sudo apt-get install -y cmake ninja-build g++
+        sudo apt-get install -y cmake ninja-build g++ dpkg-dev
 
     - name: Setup vcpkg
       run: |
         git clone https://github.com/Microsoft/vcpkg.git
         ./vcpkg/bootstrap-vcpkg.sh
         echo "VCPKG_ROOT=$GITHUB_WORKSPACE/vcpkg" >> $GITHUB_ENV
-        
+
     - name: Install dependencies
       run: |
         ./vcpkg/vcpkg install \
@@ -32,33 +32,48 @@ jobs:
           boost-program-options \
           boost-crc \
           boost-algorithm
-        
-    - name: Build
+
+    - name: Configure CMake (Release)
       run: |
         cmake -B build -S . \
           -DCMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/vcpkg/scripts/buildsystems/vcpkg.cmake \
+          -DCMAKE_BUILD_TYPE=Release \
           -DWITH_GOOGLE_TEST=ON
-        cmake --build build
-        
-    - name: Create package
+
+    - name: Build Release
       run: |
-        cmake --build build --target package
-        
+        cmake --build build --config Release
+
+    - name: Create DEB package
+      run: |
+        cmake --build build --target package --config Release
+
     - name: Verify artifacts
       run: |
+        ls -la build/Releases/
         ls -la build/
-        [ -f build/bayan ] || exit 1
+        [ -f build/Releases/bayan ] || exit 1
         [ -f build/*.deb ] || exit 1
-        
-    - name: Upload artifacts
+
+    - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: build-artifacts
         path: |
-          build/bayan
+          build/Releases/bayan
           build/*.deb
-    
+
     - name: Test
       run: |
         cd build
         ctest --output-on-failure
+
+    - name: Upload to GitHub Release
+      if: github.ref == 'refs/heads/main'
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          build/Releases/bayan
+          build/*.deb
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
