@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
         ("bulk,b", po::value<size_t>()->default_value(4096), 
             "Block size for file reading")
         ("hash_algorithm,a", po::value<std::string>()->default_value("crc32"), 
-            "Hash algorithm (crc32 or md5)");
+            "Hash algorithm (only crc32 supported)");
 
     try {
         po::variables_map vm;
