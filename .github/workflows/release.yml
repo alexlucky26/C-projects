@@ -38,7 +38,6 @@ jobs:
         cmake -B build -S . \
           -DCMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/vcpkg/scripts/buildsystems/vcpkg.cmake \
           -DWITH_GOOGLE_TEST=ON
-          -DPATCH_VERSION=${{ github.run_number }}
     - name: Build Release
       run: |
         cmake --build build --config Release
