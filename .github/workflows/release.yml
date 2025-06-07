@@ -30,7 +30,8 @@ jobs:
           boost-filesystem \
           boost-system \
           boost-program-options \
-          boost-crc
+          boost-crc \
+          boost-algorithm
         
     - name: Build
       run: |
