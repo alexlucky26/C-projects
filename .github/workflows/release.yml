@@ -1,99 +1,63 @@
-name: 'C++ CI'
+name: C++ CI
 
 on:
   push:
-    branches:
-      - main
-      - bayan
-
-permissions:
-  contents: read
-  packages: write
+    branches: [main, bayan]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
-          
-      # Установка базовых зависимостей
-      - run: sudo apt update
-      - run: sudo apt upgrade -y cmake ninja-build g++
-      
-      # Настройка vcpkg
-      - name: Setup vcpkg
-        uses: actions/setup-vcpkg@v3
-        with:
-          vcpkgDirectory: './vcpkg'
-          
-      # Кеширование vcpkg для ускорения сборок
-      - name: Cache vcpkg
-        uses: actions/cache@v3
-        with:
-          path: |
-            vcpkg/installed
-            vcpkg/packages
-          key: ${{ runner.os }}-vcpkg-${{ hashFiles('**/CMakeLists.txt') }}
-          
-      # Установка Boost через vcpkg
-      - name: Install Boost
-        run: vcpkg install boost-filesystem:x64-linux boost-system:x64-linux boost-program-options:x64-linux
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
         
-      # Конфигурация проекта
-      - name: Configure CMake
-        run: |
-          cmake -B build -G "Ninja" \
-            -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake \
-            -DWITH_GOOGLE_TEST=ON \
-            -DPATCH_VERSION=${{ github.run_number }}
-            
-      # Сборка проекта
-      - name: Build project
-        run: cmake --build build
+    - name: Install tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake ninja-build g++
+
+    - name: Setup vcpkg
+      run: |
+        git clone https://github.com/Microsoft/vcpkg.git
+        ./vcpkg/bootstrap-vcpkg.sh
+        echo "VCPKG_ROOT=$GITHUB_WORKSPACE/vcpkg" >> $GITHUB_ENV
         
-      # Запуск тестов
-      - name: Run tests
-        run: |
-          cd build
-          ctest --output-on-failure
-          
-      # Создание .deb пакета
-      - name: Create package
-        run: cmake --build build --target package
+    - name: Install dependencies
+      run: |
+        ./vcpkg/vcpkg install \
+          boost-filesystem \
+          boost-system \
+          boost-program-options \
+          boost-crc
         
-      # Поиск .deb файла
-      - name: Find .deb file
-        id: find_deb
-        run: |
-          DEB_FILE=$(find build -name "bayan-0.0.*-Linux.deb" | head -n 1)
-          if [[ -z "${DEB_FILE}" ]]; then
-            echo "Error: .deb file not found!"
-            exit 1
-          fi
-          echo "DEB_FILE=${DEB_FILE}" >> $GITHUB_OUTPUT
-          
-      # Создание релиза
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
-        with:
-          tag_name: ${{ github.run_number }}
-          release_name: Release ${{ github.run_number }}
-          draft: false
-          prerelease: false
-          
-      # Загрузка .deb файла в релиз
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ steps.find_deb.outputs.DEB_FILE }}
-          asset_name: bayan-0.0.${{ github.run_number }}-Linux.deb
-          asset_content_type: application/vnd.debian.binary-package
+    - name: Build
+      run: |
+        cmake -B build -S . \
+          -DCMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/vcpkg/scripts/buildsystems/vcpkg.cmake \
+          -DWITH_GOOGLE_TEST=ON
+        cmake --build build
+        
+    - name: Create package
+      run: |
+        cmake --build build --target package
+        
+    - name: Verify artifacts
+      run: |
+        ls -la build/
+        [ -f build/bayan ] || exit 1
+        [ -f build/*.deb ] || exit 1
+        
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifacts
+        path: |
+          build/bayan
+          build/*.deb
+    
+    - name: Test
+      run: |
+        cd build
+        ctest --output-on-failure
