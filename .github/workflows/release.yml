@@ -16,7 +16,7 @@ jobs:
     - name: Install tools
       run: |
         sudo apt-get update
-        sudo apt-get install -y cmake ninja-build g++ dpkg-dev
+        sudo apt-get install -y cmake ninja-build g++
 
     - name: Setup vcpkg
       run: |
@@ -33,11 +33,10 @@ jobs:
           boost-crc \
           boost-algorithm
 
-    - name: Configure CMake (Release)
+    - name: Build
       run: |
         cmake -B build -S . \
           -DCMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/vcpkg/scripts/buildsystems/vcpkg.cmake \
-          -DCMAKE_BUILD_TYPE=Release \
           -DWITH_GOOGLE_TEST=ON
 
     - name: Build Release
@@ -46,13 +45,12 @@ jobs:
 
     - name: Create DEB package
       run: |
-        cmake --build build --target package --config Release
+        cmake --build build --target package
 
     - name: Verify artifacts
       run: |
-        ls -la build/Releases/
         ls -la build/
-        [ -f build/Releases/bayan ] || exit 1
+        [ -f build/bayan ] || exit 1                
         [ -f build/*.deb ] || exit 1
 
     - name: Upload build artifacts
@@ -60,7 +58,7 @@ jobs:
       with:
         name: build-artifacts
         path: |
-          build/Releases/bayan
+          build/bayan
           build/*.deb
 
     - name: Test
@@ -73,7 +71,7 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: |
-          build/Releases/bayan
+          build/bayan
           build/*.deb
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
