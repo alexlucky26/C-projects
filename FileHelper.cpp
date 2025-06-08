@@ -56,9 +56,19 @@ void DuplicateFinder::find_in_directory(const fs::path &dir, const std::vector<s
 					find_in_directory(entry.path(), excluded_dirs, max_depth - 1);
 				}
 			}
-			else if (fs::is_regular_file(entry.status()))
+			else 
 			{
-				process_file(entry.path());
+				try 
+				{
+					if (fs::is_regular_file(entry.status()))
+					{
+						process_file(entry.path());
+					}
+				} 
+				catch (const boost::filesystem::filesystem_error& e) 
+				{
+					std::cerr << "Skipping inaccessible file: " << e.what() << std::endl;
+				}
 			}
 		}
 	}
