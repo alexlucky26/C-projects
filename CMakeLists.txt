@@ -10,7 +10,7 @@ option(WITH_GOOGLE_TEST "Whether to build Google test" OFF)
 configure_file(version.h.in version.h)
 
 add_executable(bulk main.cpp)
-add_library(bulk_lib BulkParser.cpp)
+add_library(bulk_lib async.cpp BulkParser.cpp ThreadSafeQueue.cpp)
 
 set_target_properties(bulk bulk_lib PROPERTIES
     CXX_STANDARD 17

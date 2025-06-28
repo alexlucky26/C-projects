@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -6,13 +7,19 @@
 #include <sstream>
 #include <algorithm>
 #include <memory>
+#include "ThreadSafeQueue.h"
 
 using namespace std;
 
 /// @brief a base class with common functions for Static and Dynamic processors
+using Block = vector<string>;
+struct BlockTask {
+    Block commands;
+    std::time_t timestamp;
+};
 class BlockProcessor {
 public:
-    vector<string> block;
+    BlockTask block;
     void FlushBlock();
 
     virtual void ProcessCommand(const string& command) = 0;
@@ -21,8 +28,8 @@ public:
 
 /// @brief processing of static blocks
 class StaticBlockProcessor : public BlockProcessor {
-    size_t N;
 public:
+    size_t N;
     StaticBlockProcessor(size_t n) : N(n) {}
     void ProcessCommand(const string& command) override;
 };
@@ -38,9 +45,13 @@ class BulkParser {
     BlockProcessor& dynamicProcessor;
     size_t braceCounter = 0; // a counter for amount of braces '{}' to recognize braces that should be ignored
 public:
+    ThreadSafeQueue FileBlockTasks;
+    ThreadSafeQueue LoggerBlockTasks;
     BulkParser(BlockProcessor& staticProc, BlockProcessor& dynamicProc) 
         : staticProcessor(staticProc), dynamicProcessor(dynamicProc) {}
 
     void ParseCommand(const string& command);
     void Finalize();
+    void FlushBlockToTasks(BlockProcessor& processor);
 };
+
