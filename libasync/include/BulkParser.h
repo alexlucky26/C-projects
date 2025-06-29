@@ -8,20 +8,13 @@
 #include <algorithm>
 #include <memory>
 #include "ThreadSafeQueue.h"
+#include "BlockTask.h"
 
 using namespace std;
 
-/// @brief a base class with common functions for Static and Dynamic processors
-using Block = vector<string>;
-struct BlockTask {
-    Block commands;
-    std::time_t timestamp;
-};
 class BlockProcessor {
 public:
     BlockTask block;
-    void FlushBlock();
-
     virtual void ProcessCommand(const string& command) = 0;
     virtual ~BlockProcessor() = default;
 };
@@ -41,14 +34,14 @@ public:
 };
 
 class BulkParser {
-    BlockProcessor& staticProcessor;
-    BlockProcessor& dynamicProcessor;
+    unique_ptr<BlockProcessor> staticProcessor;
+    unique_ptr<BlockProcessor> dynamicProcessor;
     size_t braceCounter = 0; // a counter for amount of braces '{}' to recognize braces that should be ignored
 public:
     ThreadSafeQueue FileBlockTasks;
     ThreadSafeQueue LoggerBlockTasks;
-    BulkParser(BlockProcessor& staticProc, BlockProcessor& dynamicProc) 
-        : staticProcessor(staticProc), dynamicProcessor(dynamicProc) {}
+    BulkParser(std::unique_ptr<BlockProcessor> staticProc, std::unique_ptr<BlockProcessor> dynamicProc)
+        : staticProcessor(std::move(staticProc)), dynamicProcessor(std::move(dynamicProc)) {}
 
     void ParseCommand(const string& command);
     void Finalize();

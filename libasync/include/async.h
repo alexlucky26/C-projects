@@ -4,6 +4,7 @@
 #include <queue>
 #include <mutex>
 #include <thread>
+#include "export.hpp"
 
 using namespace std;
 
@@ -16,7 +17,7 @@ struct Context {
     int bulk_size;
 };
 
-class libasync {
+class LIBASYNC_EXPORT libasync {
 public:
    static void* connect(size_t N);
    static void receive(void* h, const char* data, size_t size);

@@ -7,17 +7,13 @@
 #include <vector>
 #include <mutex>
 #include <condition_variable>
+#include "BlockTask.h"
 
-class BlockTask;
 class ThreadSafeQueue {
 public:
     void push(BlockTask value);
-
     // блокирующее извлечение; возвращает false, если очередь закрыли
     bool pop(BlockTask& out);
-
-    //bool get_last(BlockTask& out); // получаем последнее добавленное значение
-
     // вызываем, когда больше не будет push
     void close();
 private:

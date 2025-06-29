@@ -1,5 +1,4 @@
-#include "ThreadSafeQueue.h"
-#include "BulkParser.h"
+#include "../include/ThreadSafeQueue.h"
 
 void ThreadSafeQueue::push(BlockTask value) {
     {
@@ -19,15 +18,6 @@ bool ThreadSafeQueue::pop(BlockTask& out) {
     queue_.pop();
     return true;
 }
-
-// bool ThreadSafeQueue::get_last(BlockTask& out) {
-//     std::unique_lock<std::mutex> lock(mutex_);
-//     cv_.wait(lock, [this] { return closed_ || !queue_.empty(); });
-//     if (closed_ && queue_.empty()) return false;
-
-//     out = queue_.back();
-//     return true;
-// }
 
 // вызываем, когда больше не будет push
 void ThreadSafeQueue::close() {
