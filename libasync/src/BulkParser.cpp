@@ -1,17 +1,17 @@
 #include "../include/BulkParser.h"
-
+#include <chrono>
 /// @brief processing 'static' and 'dynamic' commands
 /// @param command 
 void BulkParser::ParseCommand(const string& command) 
 {
-    if (command == "{") 
+    if (command.at(0) == '{') 
     {
         if (braceCounter == 0) {
             FlushBlockToTasks(*staticProcessor);
         }
         braceCounter++;
     } 
-    else if (command == "}") 
+    else if (command.at(0) == '}') 
     {
         if (braceCounter > 0) 
         {
@@ -41,7 +41,9 @@ void BulkParser::ParseCommand(const string& command)
 
 void BulkParser::FlushBlockToTasks(BlockProcessor& processor)
 {
-    processor.block.timestamp = time(nullptr);
+    // более точное время, чем просто time(nullptr), что необходимо для формирования разных имен файлов
+    long long now_us = duration_cast<chrono::microseconds>(chrono::system_clock::now().time_since_epoch()).count();
+    processor.block.timestamp = now_us;
     LoggerBlockTasks.push(processor.block);
     FileBlockTasks.push(move(processor.block));
 }

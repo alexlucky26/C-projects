@@ -27,11 +27,13 @@ int main(int argc, char* argv[]) {
             cerr << "Error reading file: " << path << '\n';
             continue;
         }
-
-        void* ctx = libasync::connect(/*bulk size*/ 5);
+        
+        constexpr int defaultBulkSize = 5;
+        void* ctx = libasync::connect(defaultBulkSize);
         libasync::receive(ctx, buffer.data(), buffer.size());
         libasync::disconnect(ctx);
         cout << "Processed: " << path << '\n';
+        break;
     }
     return 0;
 }
