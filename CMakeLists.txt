@@ -14,5 +14,5 @@ add_subdirectory(app)
 set(CPACK_PACKAGE_NAME "async_demo")
 set(CPACK_PACKAGE_VERSION "0.0.${PATCH_VERSION}")
 set(CPACK_GENERATOR "DEB")
-
+set(CPACK_PACKAGE_CONTACT "alex_mock_email@gmail.com")
 include(CPack)
