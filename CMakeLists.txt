@@ -10,3 +10,9 @@ project(async_demo LANGUAGES CXX)
 # и создаём таргеты
 add_subdirectory(libasync)
 add_subdirectory(app)
+
+set(CPACK_PACKAGE_NAME "async_demo")
+set(CPACK_PACKAGE_VERSION "0.0.${PATCH_VERSION}")
+set(CPACK_GENERATOR "DEB")
+
+include(CPack)
