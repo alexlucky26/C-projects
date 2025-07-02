@@ -18,8 +18,6 @@ jobs:
       - run: sudo apt-get install -y cmake ninja-build g++
       - run: cmake -B build -G "Ninja" -DWITH_GOOGLE_TEST=ON -DPATCH_VERSION=${{ github.run_number }}
       - run: cmake --build build
-      - run: cmake --build build --target test
-      - run: cmake --build build --target test
       - name: Run tests
         run: |
           cd build
