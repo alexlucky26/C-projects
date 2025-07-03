@@ -26,7 +26,7 @@ jobs:
       - name: Find .deb file
         id: find_deb
         run: |
-          DEB_FILE=$(find build -name "async_demo-0.0.*-Linux.deb" | head -n 1)
+          DEB_FILE=$(find build -name "async_demo-*-Linux.deb" | head -n 1)
           if [[ -z "${DEB_FILE}" ]]; then
             echo "Error: .deb file not found!"
             exit 1
