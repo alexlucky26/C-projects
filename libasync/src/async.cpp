@@ -8,16 +8,18 @@ static void print_task_commands(T& stream, const std::vector<std::string>& comma
     {
         stream << commands[idx];
         if constexpr (is_same_v<remove_cvref_t<T>, std::ostream>) {
-                stream << std::endl; // только если это std::ostream (например, std::cout или std::cerr)
+                stream << ' '; // только если это std::ostream (например, std::cout или std::cerr)
         }
     }
+    stream << endl;
 }
 
 static void write_to_log(ThreadSafeQueue& queue){
     BlockTask task;
-    cout << "bulk: " << endl;
     while (queue.pop(task)) // ЖДЕТ с помощью conditional variable когда будет хотя бы один блок добавлен в очередь с помощью push
     {
+        if (task.commands.empty()) continue; // если пустой блок, то пропускаем
+        cout << "bulk: ";
         print_task_commands(cout, task.commands);
     }
 }

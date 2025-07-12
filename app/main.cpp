@@ -1,39 +1,26 @@
-#include "async.h"
-
-#include <filesystem> 
+#include "BulkServer.h"
+#include <boost/asio.hpp>
 #include <iostream>
-#include <fstream>
-#include <string>
 
-using namespace std;
-namespace fs = std::filesystem;
-
-int main(int argc, char* argv[]) {
-    cout << "Enter file path:\n";
-    string path;
-    while (getline(cin, path))
+// # bulk_server <port> <bulk_size>
+int main(int argc, char *argv[])
+{
+    locale::global(locale(""));
+    if (argc != 3)
     {
-        if (!fs::exists(path) || !fs::is_regular_file(path))
-        {
-            cerr << "File not found: " << path << '\n';
-            continue;
-        }
-
-        const uintmax_t sz = fs::file_size(path);
-        vector<char> buffer(sz);
-        ifstream in(path, ios::binary);
-        if (!in.read(buffer.data(), static_cast<streamsize>(sz)))
-        {
-            cerr << "Error reading file: " << path << '\n';
-            continue;
-        }
-        
-        constexpr int defaultBulkSize = 5;
-        void* ctx = libasync::connect(defaultBulkSize);
-        libasync::receive(ctx, buffer.data(), buffer.size());
-        libasync::disconnect(ctx);
-        cout << "Processed: " << path << '\n';
-        break;
+        cerr << "Usage: bulk_server <port> <bulk_size>\n";
+        return 1;
     }
+    const int port = atoi(argv[1]);
+    if (port <= 0 || port > 65535)
+    {
+        cerr << "Invalid port number: " << port << '\n';
+        return 1;
+    }
+    boost::asio::io_context io_context;
+    server server(io_context, atoi(argv[1]), atoi(argv[2]));
+    cout << "Server started on port " << port << " with bulk size " << argv[2] << '\n';
+    io_context.run();
+
     return 0;
 }
