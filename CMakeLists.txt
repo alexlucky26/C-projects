@@ -13,7 +13,7 @@ project(async_demo LANGUAGES CXX)
 
 find_package(boost_asio CONFIG REQUIRED)
 find_package(boost_filesystem CONFIG REQUIRED)
-find_package(GTest REQUIRED)
+#find_package(GTest REQUIRED)
 
 add_subdirectory(libasync)
 add_subdirectory(app)
