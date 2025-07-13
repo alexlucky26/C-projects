@@ -1,1 +1,9 @@
 build/
+boost_1_88_0/
+CMakeFiles/
+Debug/
+docs/
+html/
+vcpkg/
+vcpkg_installed/
+_deps/

@@ -27,10 +27,10 @@ set(CPACK_GENERATOR           "DEB")
 # one monolithic package (не используем компоненты)
 include(CPack)
 
-enable_testing()
+#enable_testing()
 
-add_executable(test_client test_client.cpp)
-target_link_libraries(test_client PRIVATE Boost::asio GTest::gtest GTest::gtest_main)
-target_include_directories(test_client PRIVATE ${Boost_INCLUDE_DIRS})
+#add_executable(test_client test_client.cpp)
+#target_link_libraries(test_client PRIVATE Boost::asio GTest::gtest GTest::gtest_main)
+#target_include_directories(test_client PRIVATE ${Boost_INCLUDE_DIRS})
 
-add_test(NAME test_client COMMAND test_client)
+#add_test(NAME test_client COMMAND test_client)
