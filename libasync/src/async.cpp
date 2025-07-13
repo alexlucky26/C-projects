@@ -57,16 +57,28 @@ void libasync::receive(void* h, const char* data, size_t size)
     if (context && context->parser)
     {
         while (getline(iss, line)) {
+            if (line.empty()) continue; // пропускаем пустые строки
             context->parser->ParseCommand(line);
         }
-        context->parser->Finalize(); // вот тут будет push в LoggerBlockTasks и в FileBlockTasks, под капотом cv notify!
+        //context->parser->Finalize(); // вот тут будет push в LoggerBlockTasks и в FileBlockTasks, под капотом cv notify!
     }
 
-    for (auto& thread_ : context->workers) // все 3 потока параллельны - лог и два файловых, у файловых общая очередь
-        thread_.join();
+    //for (auto& thread_ : context->workers) // все 3 потока параллельны - лог и два файловых, у файловых общая очередь
+    //    thread_.join();
 }
 
 void libasync::disconnect(void* h) {
     // Завершаем потоки, освобождаем память
+    if (!h) 
+        return;
+
+    auto* ctx = static_cast<Context*>(h);
+    // 1. Сбросить всё, что осталось в parser
+    if (ctx->parser)
+        ctx->parser->Finalize(); // вот тут будет push в LoggerBlockTasks и в FileBlockTasks, под капотом cv notify!
+    // 2. Закрыть очереди и дождаться воркеров
+    for (auto& th : ctx->workers) // все 3 потока параллельны - лог и два файловых, у файловых общая очередь
+        if (th.joinable())
+            th.join();
     delete h;
 }

@@ -13,16 +13,21 @@ class session : public std::enable_shared_from_this<session>
 public:
     session(tcp::socket socket): socket_(std::move(socket)) {}
     void start(int bulkSize){ 
-        do_read(bulkSize); 
+        ctx_ = libasync::connect(bulkSize);
+        do_read(); 
+    }
+    ~session() {
+        libasync::disconnect(ctx_);
     }
 private:
-    void do_read(int bulkSize);
+    void do_read();
     tcp::socket socket_;
     enum
     {
         max_length = 1024
     };
     char data_[max_length];
+    void* ctx_ = nullptr; // контекст для асинхронной работы с библиотекой libasync
 };
 
 class server
