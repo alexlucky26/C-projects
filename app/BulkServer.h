@@ -11,13 +11,15 @@ using boost::asio::ip::tcp;
 class session : public std::enable_shared_from_this<session>
 {
 public:
-    session(tcp::socket socket): socket_(std::move(socket)) {}
+    session(void* ctx, tcp::socket socket): socket_(std::move(socket)), ctx_(ctx) {}
     void start(int bulkSize){ 
-        ctx_ = libasync::connect(bulkSize);
+        //ctx_ = libasync::connect(bulkSize);
         do_read(); 
     }
     ~session() {
-        libasync::disconnect(ctx_);
+        // if (ctx_) {
+        //     libasync::disconnect(ctx_);
+        // }
     }
 private:
     void do_read();
@@ -27,7 +29,7 @@ private:
         max_length = 1024
     };
     char data_[max_length];
-    void* ctx_ = nullptr; // контекст для асинхронной работы с библиотекой libasync
+    void* ctx_ = nullptr; //не владеющая ссылка на глобальный контекст
 };
 
 class server
@@ -35,11 +37,15 @@ class server
 public:
     server(boost::asio::io_context &io_context, short port, int bulkSize)
         : acceptor_(io_context, tcp::endpoint(tcp::v4(), port)), bulkSize_(bulkSize) {
+        ctx_ = libasync::connect(bulkSize_);
         do_accept();
     }
-
+    ~server() {
+        libasync::disconnect(ctx_);
+    }
 private:
     void do_accept();
     tcp::acceptor acceptor_;
     int bulkSize_;
+    void* ctx_ = nullptr; // контекст для асинхронной работы с библиотекой libasync
 };

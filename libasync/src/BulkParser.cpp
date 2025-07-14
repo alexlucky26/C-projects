@@ -8,6 +8,7 @@ void BulkParser::ParseCommand(const string& command)
     {
         if (braceCounter == 0) {
             FlushBlockToTasks(*staticProcessor);
+            LoggerBlockTasks.push((*staticProcessor).block);
         }
         braceCounter++;
     } 
@@ -44,7 +45,7 @@ void BulkParser::FlushBlockToTasks(BlockProcessor& processor)
     // более точное время, чем просто time(nullptr), что необходимо для формирования разных имен файлов
     long long now_us = duration_cast<chrono::microseconds>(chrono::system_clock::now().time_since_epoch()).count();
     processor.block.timestamp = now_us;
-    LoggerBlockTasks.push(processor.block);
+    //LoggerBlockTasks.push(processor.block);
     FileBlockTasks.push(move(processor.block));
 }
 

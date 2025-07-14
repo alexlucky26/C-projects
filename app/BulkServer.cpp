@@ -28,7 +28,7 @@ void server::do_accept()
         {
             if (!ec)
             {
-                make_shared<session>(move(socket))->start(bulkSize_); // 2. стартуем сессию для текущего потока, отдавая ему на владение сокет
+                make_shared<session>(ctx_, move(socket))->start(bulkSize_); // 2. стартуем сессию для текущего потока, отдавая ему на владение сокет
             }
 
             do_accept(); // снова ждем акцептим следующее соединение

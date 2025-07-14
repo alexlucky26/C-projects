@@ -4,9 +4,9 @@
 template<typename T>
 static void print_task_commands(T& stream, const std::vector<std::string>& commands)
 {
-    for (size_t idx = 0; idx < commands.size(); ++idx) 
+    for (const auto& command : commands) 
     {
-        stream << commands[idx];
+        stream << command;
         if constexpr (is_same_v<remove_cvref_t<T>, std::ostream>) {
                 stream << ' '; // только если это std::ostream (например, std::cout или std::cerr)
         }
@@ -60,11 +60,8 @@ void libasync::receive(void* h, const char* data, size_t size)
             if (line.empty()) continue; // пропускаем пустые строки
             context->parser->ParseCommand(line);
         }
-        //context->parser->Finalize(); // вот тут будет push в LoggerBlockTasks и в FileBlockTasks, под капотом cv notify!
+        
     }
-
-    //for (auto& thread_ : context->workers) // все 3 потока параллельны - лог и два файловых, у файловых общая очередь
-    //    thread_.join();
 }
 
 void libasync::disconnect(void* h) {
@@ -76,9 +73,11 @@ void libasync::disconnect(void* h) {
     // 1. Сбросить всё, что осталось в parser
     if (ctx->parser)
         ctx->parser->Finalize(); // вот тут будет push в LoggerBlockTasks и в FileBlockTasks, под капотом cv notify!
-    // 2. Закрыть очереди и дождаться воркеров
-    for (auto& th : ctx->workers) // все 3 потока параллельны - лог и два файловых, у файловых общая очередь
-        if (th.joinable())
-            th.join();
+    // 2. Ждем завершения потоков
+    for (auto& worker : ctx->workers) {
+        if (worker.joinable()) {
+            worker.join();
+        }
+    }
     delete h;
 }
