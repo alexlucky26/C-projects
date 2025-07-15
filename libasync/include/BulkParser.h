@@ -8,10 +8,11 @@
 #include <memory>
 #include "ThreadSafeQueue.h"
 #include "BlockTask.h"
+#include "export.hpp"
 
 using namespace std;
 
-class BlockProcessor {
+LIBASYNC_EXPORT class BlockProcessor {
 public:
     BlockTask block;
     virtual void ProcessCommand(const string& command) = 0;
@@ -19,30 +20,36 @@ public:
 };
 
 /// @brief processing of static blocks
-class StaticBlockProcessor : public BlockProcessor {
+LIBASYNC_EXPORT class StaticBlockProcessor : public BlockProcessor {
 public:
     size_t N;
     StaticBlockProcessor(size_t n) : N(n) {}
-    void ProcessCommand(const string& command) override;
+    LIBASYNC_EXPORT void ProcessCommand(const string& command) override;
 };
 
 /// @brief processing of dynamic blocks in braces '{' and '}'
-class DynamicBlockProcessor : public BlockProcessor {
+LIBASYNC_EXPORT class DynamicBlockProcessor : public BlockProcessor {
 public:
-    void ProcessCommand(const string& command) override;
+    LIBASYNC_EXPORT void ProcessCommand(const string& command) override;
 };
 
-class BulkParser {
-    unique_ptr<BlockProcessor> staticProcessor;
+LIBASYNC_EXPORT class BulkParser {
+    shared_ptr<BlockProcessor> staticProcessor;
     unique_ptr<BlockProcessor> dynamicProcessor;
     size_t braceCounter = 0; // a counter for amount of braces '{}' to recognize braces that should be ignored
 public:
-    ThreadSafeQueue FileBlockTasks;
-    ThreadSafeQueue LoggerBlockTasks;
-    BulkParser(std::unique_ptr<BlockProcessor> staticProc, std::unique_ptr<BlockProcessor> dynamicProc)
-        : staticProcessor(std::move(staticProc)), dynamicProcessor(std::move(dynamicProc)) {}
+    shared_ptr<ThreadSafeQueue> FileBlockTasks;
+    shared_ptr<ThreadSafeQueue> LoggerBlockTasks;
+    //BulkParser(std::unique_ptr<BlockProcessor> staticProc, std::unique_ptr<BlockProcessor> dynamicProc)
+    //    : staticProcessor(std::move(staticProc)), dynamicProcessor(std::move(dynamicProc)) {}
 
-    void ParseCommand(const string& command);
+
+    // BulkParser additional constructor
+    BulkParser(shared_ptr<BlockProcessor> sharedStatic, unique_ptr<BlockProcessor> dynamicProc)
+        : staticProcessor(sharedStatic), dynamicProcessor(std::move(dynamicProc)) {}
+
+
+    LIBASYNC_EXPORT void ParseCommand(const string& command);
     void Finalize();
     void FlushBlockToTasks(BlockProcessor& processor);
 };

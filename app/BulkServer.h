@@ -1,4 +1,6 @@
 #include "async.h"
+//#include "BulkParser.h"
+//#include "BlockProcessor.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -11,16 +13,8 @@ using boost::asio::ip::tcp;
 class session : public std::enable_shared_from_this<session>
 {
 public:
-    session(void* ctx, tcp::socket socket): socket_(std::move(socket)), ctx_(ctx) {}
-    void start(int bulkSize){ 
-        //ctx_ = libasync::connect(bulkSize);
-        do_read(); 
-    }
-    ~session() {
-        // if (ctx_) {
-        //     libasync::disconnect(ctx_);
-        // }
-    }
+    session(void* ctx, tcp::socket socket);
+    void start();
 private:
     void do_read();
     tcp::socket socket_;
@@ -30,19 +24,13 @@ private:
     };
     char data_[max_length];
     void* ctx_ = nullptr; //не владеющая ссылка на глобальный контекст
+    unique_ptr<BulkParser> parser_;
 };
 
 class server
 {
 public:
-    server(boost::asio::io_context &io_context, short port, int bulkSize)
-        : acceptor_(io_context, tcp::endpoint(tcp::v4(), port)), bulkSize_(bulkSize) {
-        ctx_ = libasync::connect(bulkSize_);
-        do_accept();
-    }
-    ~server() {
-        libasync::disconnect(ctx_);
-    }
+    server(boost::asio::io_context &io_context, short port, int bulkSize);
 private:
     void do_accept();
     tcp::acceptor acceptor_;

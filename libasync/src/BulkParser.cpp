@@ -8,7 +8,7 @@ void BulkParser::ParseCommand(const string& command)
     {
         if (braceCounter == 0) {
             FlushBlockToTasks(*staticProcessor);
-            LoggerBlockTasks.push((*staticProcessor).block);
+            //LoggerBlockTasks.push((*staticProcessor).block);
         }
         braceCounter++;
     } 
@@ -45,8 +45,8 @@ void BulkParser::FlushBlockToTasks(BlockProcessor& processor)
     // более точное время, чем просто time(nullptr), что необходимо для формирования разных имен файлов
     long long now_us = duration_cast<chrono::microseconds>(chrono::system_clock::now().time_since_epoch()).count();
     processor.block.timestamp = now_us;
-    //LoggerBlockTasks.push(processor.block);
-    FileBlockTasks.push(move(processor.block));
+    LoggerBlockTasks->push(processor.block);
+    FileBlockTasks->push(move(processor.block));
 }
 
 /// @brief finish an input and flush all that remains in a static block
@@ -55,8 +55,8 @@ void BulkParser::Finalize()
     if (braceCounter == 0) {
         FlushBlockToTasks(*staticProcessor);
     }
-    LoggerBlockTasks.close();
-    FileBlockTasks.close();
+    LoggerBlockTasks->close();
+    FileBlockTasks->close();
 }
 
 void StaticBlockProcessor::ProcessCommand(const string& command) {
