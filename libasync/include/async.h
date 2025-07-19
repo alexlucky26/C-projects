@@ -5,21 +5,15 @@
 #include <mutex>
 #include <thread>
 #include "export.hpp"
-#include "BulkParser.h"
-#include "ThreadSafeQueue.h"
 
 using namespace std;
 
-//class BulkParser;
-//class BlockTask;
-//class BlockProcessor;
+class BulkParser;
+class BlockTask;
 
 struct Context {
-    shared_ptr<BlockProcessor> staticProcessor;
     shared_ptr<BulkParser> parser;
     std::vector<std::thread> workers;
-    shared_ptr<ThreadSafeQueue> FileBlockTasks;
-    shared_ptr<ThreadSafeQueue> LoggerBlockTasks;
     int bulk_size;
 };
 
