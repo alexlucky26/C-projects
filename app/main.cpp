@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
         return 1;
     }
     boost::asio::io_context io_context;
-    server server(io_context, atoi(argv[1]), atoi(argv[2]));
+    Server server(io_context, atoi(argv[1]), atoi(argv[2]));
     cout << "Server started on port " << port << " with bulk size " << argv[2] << '\n';
     io_context.run();
 

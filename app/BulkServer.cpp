@@ -1,36 +1,46 @@
 #include "BulkServer.h"
+#include "ThreadSafeQueue.h"
 using namespace std;
 
-void session::do_read()
+void SessionHandler::run() 
 {
-    auto self(shared_from_this()); // 3. создаем шеред пойнтер чтобы сессия не была уничтожена до завершения асинхронной операции
-    // 4. асинхронно читаем данные из буфера
-    socket_.async_read_some(boost::asio::buffer(data_, max_length),
-        // 5. когда данные прочитались, вызывается лямбда, отправив в лямбду эррор код и размер данных
-        [this, self](boost::system::error_code ec, size_t length)
-        {
-            if (!ec)
-            {
-                // cout << "receive " << length << "=" << string{data_, length} << endl;
-                libasync::receive(self->ctx_, data_, length);
-                // 6. вызываем do_read снова, чтобы продолжать чтение данных
-                do_read();
+    try {
+        boost::asio::streambuf buffer;
+        while (true) {
+            boost::system::error_code ec;
+            size_t len = boost::asio::read_until(socket_, buffer, '\n', ec);
+
+            if (ec == boost::asio::error::eof) {
+                break;
+            } 
+            else if (ec) {
+                throw boost::system::system_error(ec);
             }
-        });
+
+            std::string line{
+                boost::asio::buffers_begin(buffer.data()),
+                boost::asio::buffers_begin(buffer.data()) + len - 1};
+            buffer.consume(len);
+            libasync::receive(global_ctx, line);
+            libasync::receive(local_ctx, line);
+            // искусственная задержка для демонстрации перемешивания
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+    }
+    catch (std::exception& e) {
+        std::cerr << "Client error: " << e.what() << std::endl;
+    }
 }
 
-void server::do_accept()
+void Server::do_accept()
 {
     acceptor_.async_accept(
-        // 1. акцептует приходящие соединения на этот порт и вызывает лямбду. Передает в лямбду
-        //  эррор код если акцептор его выдал и tcp сокет от акцептора
-        [this](boost::system::error_code ec, tcp::socket socket)
-        {
-            if (!ec)
-            {
-                make_shared<session>(move(socket))->start(bulkSize_); // 2. стартуем сессию для текущего потока, отдавая ему на владение сокет
+        [this](boost::system::error_code ec, tcp::socket socket) {
+            if (!ec) {
+                auto handler = std::make_unique<SessionHandler>(std::move(socket), ctx_, bulkSize_);
+                handler->start();
+                handlers_.push_back(std::move(handler));
             }
-
-            do_accept(); // снова ждем акцептим следующее соединение
+            do_accept();
         });
 }

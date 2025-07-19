@@ -4,7 +4,8 @@
 /// @param command 
 void BulkParser::ParseCommand(const string& command) 
 {
-    if (command.at(0) == '{') 
+    std::lock_guard<std::mutex> lock(mutex); // синхронизация доступа к parser
+    if (command.at(0) == '{')
     {
         if (braceCounter == 0) {
             FlushBlockToTasks(*staticProcessor);
@@ -44,8 +45,7 @@ void BulkParser::FlushBlockToTasks(BlockProcessor& processor)
     // более точное время, чем просто time(nullptr), что необходимо для формирования разных имен файлов
     long long now_us = duration_cast<chrono::microseconds>(chrono::system_clock::now().time_since_epoch()).count();
     processor.block.timestamp = now_us;
-    LoggerBlockTasks.push(processor.block);
-    FileBlockTasks.push(move(processor.block));
+    BlockTasks.push(move(processor.block));
 }
 
 /// @brief finish an input and flush all that remains in a static block
@@ -54,8 +54,7 @@ void BulkParser::Finalize()
     if (braceCounter == 0) {
         FlushBlockToTasks(*staticProcessor);
     }
-    LoggerBlockTasks.close();
-    FileBlockTasks.close();
+    BlockTasks.close();
 }
 
 void StaticBlockProcessor::ProcessCommand(const string& command) {

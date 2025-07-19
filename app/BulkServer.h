@@ -4,42 +4,59 @@
 #include <iostream>
 #include <memory>
 #include <utility>
+#include <thread>
 #include <boost/asio.hpp>
+#include "ThreadSafeQueue.h"
 
 using boost::asio::ip::tcp;
+using namespace std;
 
-class session : public std::enable_shared_from_this<session>
-{
+class ThreadSafeQueue;
+
+class SessionHandler {
 public:
-    session(tcp::socket socket): socket_(std::move(socket)) {}
-    void start(int bulkSize){ 
-        ctx_ = libasync::connect(bulkSize);
-        do_read(); 
+    SessionHandler(tcp::socket socket, void* ctx/*, ThreadSafeQueue& queue*/, int bulkSize)
+        : socket_(std::move(socket)), global_ctx(ctx), local_ctx(libasync::connect(bulkSize, true)) {}
+    ~SessionHandler() { if (local_ctx) libasync::disconnect(local_ctx); };
+    void start() {
+        thread_ = std::thread(&SessionHandler::run, this);
     }
-    ~session() {
-        libasync::disconnect(ctx_);
+
+    void join() {
+        if (thread_.joinable()) {
+            thread_.join();
+        }
     }
+
 private:
-    void do_read();
+    void run();
     tcp::socket socket_;
-    enum
-    {
-        max_length = 1024
-    };
-    char data_[max_length];
-    void* ctx_ = nullptr; // контекст для асинхронной работы с библиотекой libasync
+    std::thread thread_;
+    void* global_ctx; // глобальный контекст для работы с логом
+    void* local_ctx; // контекст для асинхронной работы с файлами
 };
 
-class server
-{
+class Server {
 public:
-    server(boost::asio::io_context &io_context, short port, int bulkSize)
-        : acceptor_(io_context, tcp::endpoint(tcp::v4(), port)), bulkSize_(bulkSize) {
-        do_accept();
+    Server(boost::asio::io_context& io_context, short port, int bulkSize)
+        : acceptor_(io_context, tcp::endpoint(tcp::v4(), port)), 
+          bulkSize_(bulkSize),
+          ctx_(libasync::connect(bulkSize)) {
+            do_accept();
+        }
+
+    ~Server() {
+        libasync::disconnect(ctx_);
+        for (auto& handler : handlers_) {
+            handler->join();
+        }
     }
 
 private:
     void do_accept();
+
     tcp::acceptor acceptor_;
+    std::vector<std::unique_ptr<SessionHandler>> handlers_;
     int bulkSize_;
+    void* ctx_; // глобальный контекст для работы с логом
 };

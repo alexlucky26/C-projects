@@ -5,8 +5,8 @@
 #include <vector>
 #include <sstream>
 #include <algorithm>
-#include <memory>
 #include "ThreadSafeQueue.h"
+#include <memory>
 #include "BlockTask.h"
 
 using namespace std;
@@ -37,8 +37,8 @@ class BulkParser {
     unique_ptr<BlockProcessor> dynamicProcessor;
     size_t braceCounter = 0; // a counter for amount of braces '{}' to recognize braces that should be ignored
 public:
-    ThreadSafeQueue FileBlockTasks;
-    ThreadSafeQueue LoggerBlockTasks;
+    ThreadSafeQueue BlockTasks;
+    std::mutex mutex; // для синхронизации доступа к parser
     BulkParser(std::unique_ptr<BlockProcessor> staticProc, std::unique_ptr<BlockProcessor> dynamicProc)
         : staticProcessor(std::move(staticProc)), dynamicProcessor(std::move(dynamicProc)) {}
 
