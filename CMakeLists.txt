@@ -11,12 +11,16 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} CAC
 
 project(async_demo LANGUAGES CXX)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 find_package(boost_asio CONFIG REQUIRED)
 find_package(boost_filesystem CONFIG REQUIRED)
 #find_package(GTest REQUIRED)
 
-add_subdirectory(libasync)
 add_subdirectory(app)
+add_subdirectory(client)
 
 # -------------------- CPack ---------------------------------------------------
 set(CPACK_PACKAGE_NAME        "async_demo")
