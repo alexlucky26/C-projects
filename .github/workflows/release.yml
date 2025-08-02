@@ -12,6 +12,9 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
+      - name: Debug Eigen/Core
+        run: |
+          ls -l ${GITHUB_WORKSPACE}/eigen-3.4.0/Eigen/Core
       - name: Debug Eigen folder
         run: |
           ls -l ${GITHUB_WORKSPACE}/eigen-3.4.0
